@@ -12,7 +12,7 @@ async function handler(
 ) {
   const { phone, email } = req.body;
   //어떤 데이터가 오는지에 따라 payload 결정
-  const user = phone ? { phone: +phone } : email ? { email } : null;
+  const user = phone ? { phone } : email ? { email } : null;
   if (!user) return res.status(400).json({ ok: false });
 
   const payload = Math.floor(100000 + Math.random() * 90000) + ""; //토큰값 난수로 생성
@@ -97,35 +97,35 @@ async function handler(
 
   //twilio API 사용
   if (phone) {
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.SERVICES_SID,
-      to: process.env.PHONE_NUMBER!, //실제로는 들어온 데이터로 해야함 phone
-      body: `Your Login Token is ${payload}`,
-    });
-    console.log("🚀 ~ message:", message);
+    // const message = await twilioClient.messages.create({
+    //   messagingServiceSid: process.env.SERVICES_SID,
+    //   to: process.env.PHONE_NUMBER!, //실제로는 들어온 데이터로 해야함 phone
+    //   body: `Your Login Token is ${payload}`,
+    // });
+    // console.log("🚀 ~ message:", message);
   }
 
   if (email) {
-    const mailOptions = {
-      from: process.env.MAIL_ID,
-      to: email,
-      subject: "Nomad Carrot Authentication Email",
-      text: `Authentication Code : ${payload}`,
-    };
-    const result = await smtpTransport.sendMail(
-      mailOptions,
-      (error: any, responses: any) => {
-        if (error) {
-          console.log(error);
-          return null;
-        } else {
-          console.log(responses);
-          return null;
-        }
-      }
-    );
-    smtpTransport.close();
-    console.log(result);
+    // const mailOptions = {
+    //   from: process.env.MAIL_ID,
+    //   to: email,
+    //   subject: "Nomad Carrot Authentication Email",
+    //   text: `Authentication Code : ${payload}`,
+    // };
+    // const result = await smtpTransport.sendMail(
+    //   mailOptions,
+    //   (error: any, responses: any) => {
+    //     if (error) {
+    //       console.log(error);
+    //       return null;
+    //     } else {
+    //       console.log(responses);
+    //       return null;
+    //     }
+    //   }
+    // );
+    // smtpTransport.close();
+    // console.log(result);
   }
   return res.json({ ok: true });
 }
