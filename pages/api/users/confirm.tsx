@@ -34,4 +34,6 @@ async function handler(
 }
 
 /**함수를 반환하는 함수 실행시 withHandler에서 반환된 함수를 NextJS에서 실행*/
-export default withApiSession(withHandler("POST", handler));
+export default withApiSession(
+  withHandler({ method: "POST", handler, isPrivate: false })
+);

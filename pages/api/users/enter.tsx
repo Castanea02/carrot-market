@@ -42,8 +42,6 @@ async function handler(
     },
   });
 
-  console.log(token);
-
   // //User return ==> upsert 사용
   // const user = await client.user.upsert({
   //   where: {
@@ -131,4 +129,4 @@ async function handler(
 }
 
 /**함수를 반환하는 함수 실행시 withHandler에서 반환된 함수를 NextJS에서 실행*/
-export default withHandler("POST", handler);
+export default withHandler({ method: "POST", handler, isPrivate: false });
