@@ -5,22 +5,23 @@ export interface ResponseType {
   [key: string]: any;
 }
 
+type method = "GET" | "POST" | "DELETE";
 interface ConfigType {
-  method: "GET" | "POST" | "DELETE";
+  methods: method[];
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
   isPrivate?: boolean;
 } //인자를 묶어서 전달하기 위한 인터페이스 설정
 
 /**method, handler, isPrivate 인자를 전달 받아 해당 메소드에 */
 export default function withHandler({
-  method,
+  methods,
   handler,
   isPrivate = true,
 }: ConfigType) {
   //nextJS가 실행할 함수
   return async function (req: NextApiRequest, res: NextApiResponse) {
     /**요청한 메소드와 다를시 필터링 */
-    if (req.method !== method) {
+    if (req.method && !methods.includes(req.method as any)) {
       return res.status(405).end();
     }
 

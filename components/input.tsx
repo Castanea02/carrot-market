@@ -14,8 +14,8 @@ export default function Input({
   name,
   kind = "text",
   register,
-  required,
   type,
+  required,
 }: InputProps) {
   return (
     <div>

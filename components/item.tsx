@@ -6,6 +6,7 @@ interface ItemProps {
   price: number;
   comments: number;
   hearts: number;
+  image: string;
 }
 
 export default function Item({
@@ -14,12 +15,13 @@ export default function Item({
   comments,
   hearts,
   id,
+  image,
 }: ItemProps) {
   return (
-    <Link href={`/items/${id}`}>
+    <Link href={`/products/${id}`}>
       <a className="flex px-4 pt-5 cursor-pointer justify-between">
         <div className="flex space-x-4">
-          <div className="w-20 h-20 bg-gray-400 rounded-md" />
+          <img src={image} className="w-20 h-20 bg-gray-400 rounded-md" />
           <div className="pt-2 flex flex-col">
             <h3 className="text-sm font-medium text-gray-900">{title}</h3>
             <span className="font-medium mt-1 text-gray-900">${price}</span>
