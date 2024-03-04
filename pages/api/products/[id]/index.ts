@@ -7,7 +7,10 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { id } = req.query;
+  const {
+    query: { id },
+    session: { user },
+  } = req;
 
   const product = await client.product.findUnique({
     where: {
@@ -29,7 +32,7 @@ async function handler(
       contains: word,
     },
   }));
-  console.log("🚀 ~ terms ~ terms:", terms);
+  console.log("🚀 ~ terms :", terms);
 
   //Similar Items => 단어를 조건문으로 넣어 확인
   //OR: 비슷한 제품 이름 조건
@@ -45,8 +48,19 @@ async function handler(
     },
   });
   console.log("🚀 ~ relatedProducts:", relatedProducts);
-
-  res.json({ ok: true, product, relatedProducts });
+  /** 관심품목 여부 확인 true, false로 표현 */
+  const isLiked = Boolean(
+    await client.fav.findFirst({
+      where: {
+        productId: product?.id,
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
+  res.json({ ok: true, product, relatedProducts, isLiked });
 }
 /**함수를 반환하는 함수 실행시 withHandler에서 반환된 함수를 NextJS에서 실행*/
 export default withApiSession(withHandler({ methods: ["GET"], handler }));
